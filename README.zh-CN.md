@@ -19,6 +19,22 @@
 
 详见 [`word-addin/`](./word-addin/)。
 
+### Raycast 插件
+
+在 Raycast 中直接搜索 Lattice 文献库并复制引用元数据。
+
+- 不离开 Raycast 即可搜索文献
+- 查看文献详情，并复制 citekey、DOI、标题或 BibTeX
+- 可在 Raycast 偏好设置中配置 Local API 端口
+
+由 [frank-miao](https://github.com/frank-miao) 开发。详见 [`raycast-extension/`](./raycast-extension/)。
+
+## 免责声明
+
+本仓库中的部分插件和扩展由社区贡献，并不一定由 Lattice 官方开发、审核、维护或背书。
+
+在使用任何插件前，请自行判断其适用性与风险，并自行承担使用第三方插件可能带来的后果，包括兼容性问题、数据丢失或安全风险。仓库维护者不对社区贡献插件引发的问题承担责任。
+
 ## Local API
 
 Lattice 运行时会暴露一组本地 HTTP API，插件通过这些接口与用户的文献库交互：

@@ -17,6 +17,22 @@ A Microsoft Word add-in for inserting citations and generating bibliographies di
 
 See [`word-addin/`](./word-addin/) for details.
 
+### Raycast Extension
+
+A Raycast extension for searching your Lattice library and copying citation metadata directly from Raycast.
+
+- Search your library without leaving Raycast
+- View paper details and copy citekey, DOI, title, or BibTeX
+- Configure the Local API port in Raycast preferences
+
+Developed by [frank-miao](https://github.com/frank-miao). See [`raycast-extension/`](./raycast-extension/) for details.
+
+## Disclaimer
+
+Some plugins and extensions in this repository are community-contributed and are not necessarily developed, reviewed, supported, or endorsed by the Lattice team.
+
+Please evaluate each plugin carefully before use and use third-party plugins at your own discretion. The repository maintainers are not responsible for issues caused by community-contributed plugins, including compatibility problems, data loss, or security risks.
+
 ## Local API
 
 When Lattice is running, it exposes a local HTTP API that plugins can use to interact with the user's library:
