@@ -9,7 +9,6 @@ Search your [Lattice](https://stringer07.github.io/Lattice_release/) literature 
 - **Instant search** across your entire Lattice library as you type
 - **Full citation details** — authors, journal, DOI, year, and more
 - **Copy actions** — copy citekey, title, DOI, or full BibTeX with one keystroke
-- **Open in Lattice** — jump straight to the paper in the desktop app
 
 ## Screenshots
 
