@@ -1,5 +1,7 @@
 # Lattice Scholar
 
+[中文文档](README.zh-CN.md)
+
 Search your [Lattice](https://stringer07.github.io/Lattice_release/) literature library directly from Raycast — no switching apps, no context loss.
 
 ## Features
