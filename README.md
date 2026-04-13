@@ -1,25 +1,25 @@
-# Lattice Scholar Plugins
+# Lattice Plugins
 
 [中文版](./README.zh-CN.md)
 
-This repository contains community-driven plugins and extensions for [Lattice Scholar](https://stringer07.github.io/Lattice_release/), built on top of the Lattice Scholar Local API.
+This repository contains community-driven plugins and extensions for [Lattice](https://stringer07.github.io/Lattice_release/), built on top of the Lattice Local API.
 
 ## Available Plugins
 
 ### Word Add-in
 
-A Microsoft Word add-in for inserting citations and generating bibliographies directly from your Lattice Scholar library.
+A Microsoft Word add-in for inserting citations and generating bibliographies directly from your Lattice library.
 
 - Search your library without leaving Word
 - Insert citations as inline references
 - Generate formatted bibliographies (IEEE, APA, or custom CSL styles)
-- Automatic metadata sync with Lattice Scholar
+- Automatic metadata sync with Lattice
 
 See [`word-addin/`](./word-addin/) for details.
 
 ## Local API
 
-When Lattice Scholar is running, it exposes a local HTTP API that plugins can use to interact with the user's library:
+When Lattice is running, it exposes a local HTTP API that plugins can use to interact with the user's library:
 
 | Endpoint | Description |
 |----------|-------------|
@@ -37,6 +37,8 @@ Contributions are welcome! You can:
 - Improve the **existing Word add-in** (features, bug fixes, etc.)
 - Improve **documentation** and examples
 
+For Local API documentation, see [LocalAPI_docs/English/README.md](./LocalAPI_docs/English/README.md).
+
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 All contributors retain copyright of their work and are equally protected under the project license 
@@ -46,6 +48,6 @@ All contributors retain copyright of their work and are equally protected under 
 This project is **source-available** under the [PolyForm Shield 1.0.0](./LICENSE).
 
 - You are free to use, modify, and redistribute this software for any non-competing purpose.
-- Public redistributions must include **prominent attribution** to the Lattice Scholar project.
+- Public redistributions must include **prominent attribution** to the Lattice project.
 
 This is not OSI-approved open source software. See [LICENSING.md](./LICENSING.md) for full details.

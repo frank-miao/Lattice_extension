@@ -2,7 +2,7 @@
 
 > Effective date: 2026-04-07 · Version: 1.0
 
-Contributions are welcome — whether it's a new plugin built on the Lattice Scholar local API, improvements to the existing Word add-in, bug fixes, or documentation.
+Contributions are welcome — whether it's a new plugin built on the Lattice local API, improvements to the existing Word add-in, bug fixes, or documentation.
 
 ## License of Contributions
 
@@ -14,7 +14,7 @@ Your contribution is licensed to the project — and to all downstream users of 
 
 ### 2. You retain copyright
 
-You retain copyright ownership of your contribution. The project does not ask you to assign or transfer your copyright. You are credited as part of "The Lattice Scholar Project Contributors."
+You retain copyright ownership of your contribution. The project does not ask you to assign or transfer your copyright. You are credited as part of "The Lattice Project Contributors."
 
 ### 3. You have the right to contribute
 
@@ -51,7 +51,7 @@ If any of the terms in section 4 (the maintainer relicensing grant) are unaccept
 
 ## What You Can Contribute
 
-- **New plugins** built on the Lattice Scholar local API (any platform or language)
+- **New plugins** built on the Lattice local API (any platform or language)
 - **Improvements** to the existing Word add-in
 - **Bug fixes** and performance improvements
 - **Documentation** and examples

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-PolyForm-Shield-1.0.0
-// Copyright (c) 2026 The Lattice Scholar Project Contributors
+// Copyright (c) 2026 The Lattice Project Contributors
 import { renderCitationsAndBibliography, getBuiltinStyles } from "../lib/csl-processor.js";
 import { createEmptyStore, loadStore, saveStore, setStoreStyle, upsertStoreItem } from "../lib/document-store.js";
 import { fetchPaperSnapshot, getBridgeStatus, searchLattice } from "../lib/lattice-client.js";

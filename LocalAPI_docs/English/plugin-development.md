@@ -1,0 +1,204 @@
+# Building Plugins on Top of the Local API
+
+Language versions:
+[简体中文](../Chinese/插件开发指南.md)
+
+Related documents:
+[Overview](./README.md) · [Quick Start](./quickstart.md) · [API Reference](./api-reference.md)
+
+## Target use cases
+
+The Local API is not only for scripts. It also works well for locally hosted plugin front ends such as:
+
+- document editor add-ins
+- Obsidian companion panels
+- local web dashboards
+- automation configuration pages
+- any plugin UI that needs local access to Lattice paper data
+
+## What plugin hosting means
+
+In addition to `/api/v1/...`, Lattice also exposes:
+
+```text
+/plugins/{name}/...
+```
+
+That means you can deploy a plugin as a static website into Lattice's plugin directory, and Lattice will serve it over the same local HTTP service.
+
+Examples:
+
+```text
+http://127.0.0.1:52731/plugins/my-plugin/index.html
+http://127.0.0.1:52731/plugins/my-plugin/app.js
+http://127.0.0.1:52731/plugins/my-plugin/assets/icon.png
+```
+
+## Why this model is recommended
+
+The advantages are straightforward:
+
+- your plugin page and `/api/v1` stay on the same origin
+- you do not need to run a separate local web server
+- you avoid extra cross-origin complexity
+- packaging and distribution stay simple
+- it is easy to turn into a "user installs it and it works" desktop plugin
+
+## Where plugin files live
+
+For the sandboxed Lattice app, plugins are placed under the app container's Application Support directory. A typical path looks like:
+
+```text
+~/Library/Containers/com.aurelian.Lattice/Data/Library/Application Support/Plugins/<plugin-name>/
+```
+
+After deployment, the corresponding public URL becomes:
+
+```text
+http://127.0.0.1:<port>/plugins/<plugin-name>/...
+```
+
+## Recommended plugin directory layout
+
+Lattice does not require a specific framework. You only need static assets.
+
+A minimal plugin can look like this:
+
+```text
+my-plugin/
+  index.html
+  app.js
+  styles.css
+  assets/
+    icon.png
+```
+
+If your source repository also contains build scripts, templates, or source code, the installation step should copy only the final static output into the plugin directory.
+
+## Common static asset types supported
+
+The Local API already serves the asset types most plugins need, including:
+
+- `.html`
+- `.js`
+- `.css`
+- `.json`
+- `.png`
+- `.svg`
+- `.xml`
+- `.csl`
+
+That means a plugin with UI, styles, icons, and CSL templates can be hosted directly.
+
+## Minimal client pattern
+
+If the plugin page itself is loaded from `/plugins/{name}/...`, the recommended pattern is to always call the API with relative paths:
+
+```js
+async function requestJson(path) {
+  const response = await fetch(`/api/v1${path}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json"
+    }
+  });
+
+  if (!response.ok) {
+    const payload = await response.json().catch(() => null);
+    throw new Error(payload?.error || `${response.status} ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+export async function getBridgeStatus() {
+  return requestJson("/status");
+}
+
+export async function searchLattice(query, limit = 10) {
+  return requestJson(`/search?q=${encodeURIComponent(query ?? "")}&limit=${encodeURIComponent(String(limit))}`);
+}
+
+export async function fetchPaperSnapshot(id) {
+  return requestJson(`/papers/${encodeURIComponent(id)}`);
+}
+```
+
+This is also the recommended default integration pattern.
+
+## Recommended development workflow
+
+### 1. Verify the API first
+
+Start with `curl` or a browser check:
+
+```bash
+curl http://127.0.0.1:52731/api/v1/status
+```
+
+### 2. Build your front end locally
+
+Use any stack you want:
+
+- plain HTML/CSS/JS
+- built static output from React / Vue / Svelte
+- Office Add-in front ends
+- any other setup that produces static files
+
+### 3. Copy the built output into the plugin directory
+
+Deploy the final output to:
+
+```text
+.../Application Support/Plugins/<plugin-name>/
+```
+
+### 4. Open it through the plugin URL
+
+```text
+http://127.0.0.1:52731/plugins/<plugin-name>/index.html
+```
+
+### 5. If the host application needs registration, generate its manifest or loader
+
+Examples:
+
+- some hosts require a manifest or registration file
+- some desktop tools may require a custom protocol or WebView entrypoint
+
+## Recommended architecture for local external extensions
+
+A robust pattern looks like this:
+
+1. the UI page is hosted by Lattice under `/plugins/<name>/...`
+2. the page calls `/api/v1/...` using relative paths
+3. the host application only needs to open that page
+4. the plugin keeps its own cache for paper snapshots and rendering settings
+
+This keeps responsibilities simple:
+
+- Lattice provides local data and static asset hosting
+- the plugin owns UI, state, rendering, and host integration
+
+## What not to rely on
+
+### A remote website calling the Local API directly
+
+This is not the intended default model. The Local API is designed around local-origin, local-integration usage.
+
+### Treating the Local API as a write API
+
+It is not. The current capability set is centered on search and citation-oriented reads.
+
+## Debugging advice
+
+- Start with `/api/v1/status` to distinguish availability problems from data problems
+- If search results look wrong, inspect `/api/v1/search` directly
+- If a plugin page does not open, first verify that the plugin assets were actually copied into the plugin directory
+- If static files load but API requests fail, verify that the configured port in Lattice still matches the URL being used
+- If the host application caches an entry URL, changing the Local API port usually requires re-registration or reinstallation
+
+## Related documents
+
+- For a first-time integration flow, start with [Quick Start](./quickstart.md)
+- For exact endpoint fields and error handling details, use [API Reference](./api-reference.md)

@@ -1,17 +1,17 @@
-# Lattice Scholar Word 插件
+# Lattice Word 插件
 
 [English](./README.md)
 
-![Lattice Scholar Word 插件演示](./demo/demo.png)
+![Lattice Word 插件演示](./demo/demo.png)
 
-这个插件允许你在 Microsoft Word 里直接搜索 Lattice Scholar 文库、插入引用占位符，并在文档中生成格式化的引文和参考文献。
+这个插件允许你在 Microsoft Word 里直接搜索 Lattice 文库、插入引用占位符，并在文档中生成格式化的引文和参考文献。
 
 当前实现是一个由 Lattice 本地托管的 Office Add-in。它通过 `127.0.0.1` 上的 Lattice Local API 通信，并在 macOS 上将插件安装到本地 Word 容器中。
 
 ## 环境要求
 
-- Lattice Scholar `> 1.2`
-- 已在 Lattice Scholar 中启用 Local API
+- Lattice `> 1.2`
+- 已在 Lattice 中启用 Local API
 - 支持 `WordApi 1.4` 的 Microsoft Word
 - 当前仓库内的安装脚本面向 macOS
 
@@ -48,7 +48,7 @@
 - 正常使用时不需要手动指定端口
 - 如果之后 Local API 端口发生变化，需要先卸载再重新安装 Word 插件，让 manifest 指向新的本地地址
 
-由于采用了这种架构，所以在以下场景中必须保持 Lattice Scholar 正在运行：
+由于采用了这种架构，所以在以下场景中必须保持 Lattice 正在运行：
 
 - Word 插件连接 Lattice
 - 搜索文库
@@ -66,9 +66,9 @@
 
 安装步骤：
 
-1. 至少先启动一次 Lattice Scholar。
-2. 在 Lattice Scholar 中启用 Local API。
-3. 保持 Lattice Scholar 处于运行状态。
+1. 至少先启动一次 Lattice。
+2. 在 Lattice 中启用 Local API。
+3. 保持 Lattice 处于运行状态。
 4. 下载 `Lattice-Word-Addin-macOS-1.0.0.0.zip`。
 5. 解压下载得到的 zip 文件。
 6. 打开解压后的 `Lattice-Word-Addin-macOS-1.0.0.0/word-addin/` 文件夹。

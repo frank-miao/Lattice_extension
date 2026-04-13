@@ -4,7 +4,7 @@
 
 This repository contains third-party materials. The project license in [LICENSE](./LICENSE) (PolyForm Shield 1.0.0) applies only to original material that the licensor is able to license. Third-party files remain under their own upstream terms and are **not** relicensed by this project.
 
-The Lattice Scholar project ships these third-party materials with mandatory user-visible attribution. The Word add-in displays a Credits panel that satisfies these obligations at runtime; see [`word-addin/web/taskpane/taskpane.html`](./word-addin/web/taskpane/taskpane.html).
+The Lattice project ships these third-party materials with mandatory user-visible attribution. The Word add-in displays a Credits panel that satisfies these obligations at runtime; see [`word-addin/web/taskpane/taskpane.html`](./word-addin/web/taskpane/taskpane.html).
 
 ## `word-addin/web/vendor/citeproc/citeproc.js` — citeproc-js
 
@@ -16,13 +16,13 @@ The Lattice Scholar project ships these third-party materials with mandatory use
 
 ### License election
 
-The Lattice Scholar project **elects to use citeproc-js under the Common Public Attribution License (CPAL) version 1**, as offered by the dual-license option in the file header. The AGPL option is **not** elected, and no AGPL obligations are accepted or imposed by inclusion of this file in this repository.
+The Lattice project **elects to use citeproc-js under the Common Public Attribution License (CPAL) version 1**, as offered by the dual-license option in the file header. The AGPL option is **not** elected, and no AGPL obligations are accepted or imposed by inclusion of this file in this repository.
 
-This election applies to all current and future distributions of citeproc-js made by or as part of the Lattice Scholar project, unless explicitly stated otherwise.
+This election applies to all current and future distributions of citeproc-js made by or as part of the Lattice project, unless explicitly stated otherwise.
 
 ### CPAL §14 Attribution Information
 
-CPAL §14 requires that any product derived from or incorporating CPAL-licensed code display an Attribution Notice in a user-visible part of the user interface every time the product is used. The Lattice Scholar Word add-in satisfies this by:
+CPAL §14 requires that any product derived from or incorporating CPAL-licensed code display an Attribution Notice in a user-visible part of the user interface every time the product is used. The Lattice Word add-in satisfies this by:
 
 - Displaying a "Credits / Open Source Notices" link in the taskpane footer that opens an inline Credits panel.
 - The Credits panel names citeproc-js, its author Frank Bennett, the CPAL license election, and a link to the upstream project.

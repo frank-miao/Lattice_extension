@@ -20,17 +20,17 @@ By submitting a pull request or other contribution to this repository, you agree
 - You additionally grant the project maintainer a perpetual, non-exclusive license to relicense your contribution under any other license — including future commercial licenses — so the project can offer commercial terms to customers without chasing every historical contributor. The public version remains under PolyForm Shield 1.0.0.
 - You are equally protected by the license's Noncompete clause in the public version: no competing reference-management product may use your contributed code through that public grant.
 
-All contributors are collectively credited as "The Lattice Scholar Project Contributors" in the copyright notice.
+All contributors are collectively credited as "The Lattice Project Contributors" in the copyright notice.
 
 ## Important notes
 
-- The `Required Notice:` lines in [NOTICE](./NOTICE) define the prominent attribution requirement. Any public redistribution must credit the Lattice Scholar project in a location visible to end users, and must not remove, hide, obscure, or replace that attribution surface with a non-equivalent one.
+- The `Required Notice:` lines in [NOTICE](./NOTICE) define the prominent attribution requirement. Any public redistribution must credit the Lattice project in a location visible to end users, and must not remove, hide, obscure, or replace that attribution surface with a non-equivalent one.
 - The repository includes third-party code and style assets under other licenses. Those files are not automatically relicensed by the project-level license. The Word add-in's runtime Credits panel (in `word-addin/web/taskpane/taskpane.html`) is the user-visible attribution surface that satisfies CPAL §14 for citeproc-js and acknowledges the CSL project for bundled styles. **Forks and redistributions must preserve a functionally equivalent runtime attribution surface.**
-- The trademark policy refers to `Lattice Scholar` as the product name and reserves the standalone word `Lattice` within the field of reference-management and citation software.
+- The trademark policy reflects the current product name `Lattice`, recognizes `Lattice Scholar` as the former name of the same project, and notes that App Store storefront titles may use `Lattice: Reference Manager` and `Lattice: 极简的文献管理`.
+- The trademark policy does not claim exclusive rights in the standalone word `Lattice` across all software categories. It is intended only to describe the project's branding position for reference-management, citation, bibliography, and closely related software/services, together with an anti-confusion policy for forks and redistributions.
 
 ## Pre-publication checklist
 
 1. Verify that your distribution of `citeproc.js` and vendored CSL/locales satisfies their upstream terms, including the runtime Credits panel.
 2. Ensure CPAL attribution requirements for citeproc.js are met in any user-facing "About" or Credits area.
 3. If you remove or restyle the taskpane footer, ensure the "Credits & Open Source Notices" link remains reachable.
-

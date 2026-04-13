@@ -1,17 +1,17 @@
-# Lattice Scholar Word Add-in
+# Lattice Word Add-in
 
 [中文说明](./README.zh-CN.md)
 
-![Lattice Scholar Word Add-in Demo](./demo/demo.png)
+![Lattice Word Add-in Demo](./demo/demo.png)
 
-This plugin lets you search your Lattice Scholar library from Microsoft Word, insert citation placeholders, and generate formatted citations plus a bibliography inside the document.
+This plugin lets you search your Lattice library from Microsoft Word, insert citation placeholders, and generate formatted citations plus a bibliography inside the document.
 
 The current implementation is a local Office Add-in hosted by Lattice itself. It talks to the Lattice Local API on `127.0.0.1` and installs a Word manifest into the local Word container on macOS.
 
 ## Requirements
 
-- Lattice Scholar `> 1.2`
-- Local API enabled in Lattice Scholar
+- Lattice `> 1.2`
+- Local API enabled in Lattice
 - Microsoft Word that supports `WordApi 1.4`
 - macOS for the installer in this repository
 
@@ -48,7 +48,7 @@ Port behavior:
 - In normal use, you do not need to specify the port manually
 - If the Local API port changes later, uninstall and reinstall the Word add-in so the manifest points to the new local origin
 
-Because of this architecture, Lattice Scholar must be running whenever Word needs to:
+Because of this architecture, Lattice must be running whenever Word needs to:
 
 - connect to the add-in
 - search the library
@@ -66,9 +66,9 @@ Download the release package first:
 
 Installation steps:
 
-1. Launch Lattice Scholar at least once.
-2. Enable the Local API in Lattice Scholar.
-3. Keep Lattice Scholar running.
+1. Launch Lattice at least once.
+2. Enable the Local API in Lattice.
+3. Keep Lattice running.
 4. Download `Lattice-Word-Addin-macOS-1.0.0.0.zip`.
 5. Extract the downloaded zip file.
 6. Open the extracted `Lattice-Word-Addin-macOS-1.0.0.0/word-addin/` folder.
