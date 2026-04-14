@@ -38,6 +38,13 @@
       "subtitle": "Lattice Scholar Extension",
       "description": "Check Lattice local API connection status",
       "mode": "view"
+    },
+    {
+      "name": "lattice-doi",
+      "title": "Find Paper by Current Page",
+      "subtitle": "Lattice Scholar Extension",
+      "description": "Detect the DOI on the current browser page and show paper metadata",
+      "mode": "view"
     }
   ],
   "dependencies": {
