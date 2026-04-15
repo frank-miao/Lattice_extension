@@ -1,7 +1,11 @@
-import { Clipboard, showToast, Toast } from "@raycast/api";
+import { Clipboard, getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { Cite } from "@citation-js/core";
+import "@citation-js/plugin-csl";
+import "@citation-js/plugin-bibtex";
+import "@citation-js/plugin-ris";
 
 // Export format types for Word-compatible reference managers
-export type ExportFormat = "bibtex" | "ris" | "endnote" | "apa" | "mla" | "chicago";
+export type ExportFormat = "bibtex" | "ris" | "endnote" | "apa" | "mla" | "chicago" | "csl-json";
 
 export interface FormatOption {
   id: ExportFormat;
@@ -16,6 +20,7 @@ export const EXPORT_FORMATS: FormatOption[] = [
   { id: "apa", title: "APA", description: "APA 7th edition citation" },
   { id: "mla", title: "MLA", description: "MLA 9th edition citation" },
   { id: "chicago", title: "Chicago", description: "Chicago 17th edition citation" },
+  { id: "csl-json", title: "CSL-JSON", description: "Citation Style Language JSON" },
 ];
 
 // Paper interface matching the API response
@@ -35,94 +40,203 @@ export interface Paper {
   cslItem: Record<string, unknown>;
 }
 
-function getBibTeXEntryType(paperType: string): string {
-  switch (paperType.toLowerCase()) {
-    case "book":
-      return "book";
-    case "article":
-      return "article";
-    case "inproceedings":
-      return "inproceedings";
-    case "thesis":
-      return "phdthesis";
-    case "report":
-      return "techreport";
-    case "misc":
-      return "misc";
+// CSL-JSON type mapping
+const typeMap: Record<string, string> = {
+  article: "article-journal",
+  book: "book",
+  inproceedings: "paper-conference",
+  thesis: "thesis",
+  report: "report",
+  misc: "document",
+  webpage: "webpage",
+  software: "software",
+  dataset: "dataset",
+  patent: "patent",
+};
+
+// Parse author string "First Last" into CSL name object
+function parseAuthor(author: string): { given: string; family: string } {
+  const parts = author.trim().split(/\s+/);
+  if (parts.length === 1) {
+    return { family: parts[0], given: "" };
+  }
+  const family = parts[parts.length - 1];
+  const given = parts.slice(0, -1).join(" ");
+  return { family, given };
+}
+
+// Convert Paper to CSL-JSON format
+function paperToCSL(paper: Paper): Record<string, unknown> {
+  // If the API already provides a CSL item, use it as base
+  if (paper.cslItem && Object.keys(paper.cslItem).length > 0) {
+    return {
+      id: paper.id,
+      ...paper.cslItem,
+    };
+  }
+
+  // Otherwise, construct CSL-JSON from Paper fields
+  const cslType = typeMap[paper.paperType?.toLowerCase()] || "document";
+
+  const csl: Record<string, unknown> = {
+    id: paper.citekey || paper.id,
+    type: cslType,
+    title: paper.title,
+  };
+
+  if (paper.authors && paper.authors.length > 0) {
+    csl.author = paper.authors.map(parseAuthor);
+  }
+
+  if (paper.year) {
+    csl.issued = { "date-parts": [[paper.year]] };
+  }
+
+  if (paper.journal) {
+    csl["container-title"] = paper.journal;
+  }
+
+  if (paper.volume) {
+    csl.volume = paper.volume;
+  }
+
+  if (paper.issue) {
+    csl.issue = paper.issue;
+  }
+
+  if (paper.pages) {
+    csl.page = paper.pages;
+  }
+
+  if (paper.doi) {
+    csl.DOI = paper.doi;
+  }
+
+  if (paper.isbn) {
+    csl.ISBN = paper.isbn;
+  }
+
+  return csl;
+}
+
+// CSL templates available in @citation-js/plugin-csl
+const cslTemplates: Record<string, string> = {
+  apa: "apa",
+  mla: "modern-language-association",
+  chicago: "chicago-author-date",
+};
+
+const richTextFormats: ExportFormat[] = ["apa", "mla", "chicago"];
+
+interface ExportPreferences {
+  clipboardFontFamily?: string;
+  clipboardFontSize?: string;
+}
+
+// Main export function that formats paper based on selected format
+export function formatPaper(paper: Paper, format: ExportFormat): string {
+  const cslData = paperToCSL(paper);
+  const cite = new Cite(cslData);
+
+  switch (format) {
+    case "bibtex":
+      return cite.format("bibtex") as string;
+
+    case "ris":
+      return cite.format("ris") as string;
+
+    case "endnote":
+      // EndNote uses RIS format as base; we'll enhance it
+      return formatEndNote(paper);
+
+    case "csl-json":
+      return JSON.stringify(cslData, null, 2);
+
+    case "apa":
+    case "mla":
+    case "chicago":
+      // HTML format preserves italics/bold and is compatible with Word
+      // Word will interpret the HTML formatting when pasted
+      return cite.format("bibliography", {
+        format: "html",
+        template: cslTemplates[format],
+      }) as string;
+
     default:
-      return "misc";
+      return cite.format("bibtex") as string;
   }
 }
 
-// Convert a Paper to BibTeX string
-export function formatBibTeX(paper: Paper): string {
-  const entryType = getBibTeXEntryType(paper.paperType);
-  const citekey = paper.citekey || "unknown";
+function buildClipboardContent(paper: Paper, format: ExportFormat): string | Clipboard.Content {
+  if (!richTextFormats.includes(format)) {
+    return formatPaper(paper, format);
+  }
 
-  const fields: [string, string | undefined][] = [
-    ["title", paper.title],
-    ["author", paper.authors?.join(" and ")],
-    ["year", paper.year ? String(paper.year) : undefined],
-    ["journal", paper.journal],
-    ["volume", paper.volume],
-    ["number", paper.issue],
-    ["pages", paper.pages],
-    ["doi", paper.doi],
-    ["isbn", paper.isbn],
-  ];
+  const cslData = paperToCSL(paper);
+  const cite = new Cite(cslData);
+  const template = cslTemplates[format];
+  const html = cite.format("bibliography", {
+    format: "html",
+    template,
+  }) as string;
 
-  const body = fields
-    .filter(([, v]) => v)
-    .map(([k, v]) => `  ${k} = {${v}}`)
-    .join(",\n");
-
-  return `@${entryType}{${citekey},\n${body}\n}`;
-}
-
-// Convert a Paper to RIS format
-export function formatRIS(paper: Paper): string {
-  const typeMap: Record<string, string> = {
-    article: "JOUR",
-    book: "BOOK",
-    inproceedings: "CONF",
-    thesis: "THES",
-    report: "RPRT",
-    misc: "GEN",
+  return {
+    html: wrapClipboardHtml(html),
+    text: cite.format("bibliography", {
+      format: "text",
+      template,
+    }) as string,
   };
-
-  const lines: string[] = [];
-  lines.push(`TY  - ${typeMap[paper.paperType.toLowerCase()] || "GEN"}`);
-  lines.push(`TI  - ${paper.title}`);
-
-  paper.authors?.forEach((author) => {
-    lines.push(`AU  - ${author}`);
-  });
-
-  if (paper.year) lines.push(`PY  - ${paper.year}`);
-  if (paper.journal) lines.push(`JO  - ${paper.journal}`);
-  if (paper.volume) lines.push(`VL  - ${paper.volume}`);
-  if (paper.issue) lines.push(`IS  - ${paper.issue}`);
-  if (paper.pages) lines.push(`SP  - ${paper.pages}`);
-  if (paper.doi) lines.push(`DO  - ${paper.doi}`);
-  if (paper.isbn) lines.push(`SN  - ${paper.isbn}`);
-  lines.push("ER  - ");
-
-  return lines.join("\n");
 }
 
-// Convert a Paper to EndNote format
-export function formatEndNote(paper: Paper): string {
+function wrapClipboardHtml(html: string): string {
+  const { fontFamily, fontSizePt } = getClipboardStylePreferences();
+  return `<div style="font-family: ${fontFamily}; font-size: ${fontSizePt}pt; line-height: 1.35;">${html}</div>`;
+}
+
+function getClipboardStylePreferences(): { fontFamily: string; fontSizePt: number } {
+  const preferences = getPreferenceValues<ExportPreferences>();
+
+  return {
+    fontFamily: sanitizeFontFamily(preferences.clipboardFontFamily),
+    fontSizePt: sanitizeFontSize(preferences.clipboardFontSize),
+  };
+}
+
+function sanitizeFontFamily(value: string | undefined): string {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : "Arial";
+}
+
+function sanitizeFontSize(value: string | undefined): number {
+  const size = Number(value);
+  if (Number.isFinite(size) && size > 0 && size <= 72) {
+    return size;
+  }
+  return 10;
+}
+
+// EndNote format (custom implementation based on RIS spec)
+function formatEndNote(paper: Paper): string {
   const typeMap: Record<string, string> = {
     article: "Journal Article",
+    "article-journal": "Journal Article",
     book: "Book",
     inproceedings: "Conference Paper",
+    "paper-conference": "Conference Paper",
     thesis: "Thesis",
     report: "Report",
     misc: "Generic",
+    document: "Generic",
+    webpage: "Electronic Article",
+    software: "Computer Program",
   };
 
+  const cslData = paperToCSL(paper);
+  const paperType = (cslData.type as string) || paper.paperType || "misc";
+
   const lines: string[] = [];
-  lines.push(`%0 ${typeMap[paper.paperType.toLowerCase()] || "Generic"}`);
+  lines.push(`%0 ${typeMap[paperType.toLowerCase()] || "Generic"}`);
   lines.push(`%T ${paper.title}`);
 
   paper.authors?.forEach((author) => {
@@ -140,129 +254,6 @@ export function formatEndNote(paper: Paper): string {
   return lines.join("\n");
 }
 
-// Format author names for citations
-function formatAuthors(authors: string[], maxAuthors: number = 3): string {
-  if (!authors || authors.length === 0) return "Unknown";
-  if (authors.length === 1) return authors[0];
-  if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
-  if (authors.length <= maxAuthors) {
-    const last = authors[authors.length - 1];
-    const rest = authors.slice(0, -1).join(", ");
-    return `${rest}, and ${last}`;
-  }
-  return `${authors[0]} et al.`;
-}
-
-// APA 7th edition format
-export function formatAPA(paper: Paper): string {
-  const authors = formatAuthors(paper.authors, 20);
-  const year = paper.year || "n.d.";
-  const title = paper.title;
-  const journal = paper.journal;
-  const volume = paper.volume;
-  const issue = paper.issue;
-  const pages = paper.pages;
-  const doi = paper.doi;
-
-  let citation = `${authors} (${year}). ${title}`;
-
-  if (journal) {
-    citation += `. *${journal}*`;
-    if (volume) {
-      citation += `, *${volume}*`;
-      if (issue) citation += `(${issue})`;
-    }
-    if (pages) citation += `, ${pages}`;
-    citation += ".";
-  } else {
-    citation += ".";
-  }
-
-  if (doi) citation += ` https://doi.org/${doi}`;
-
-  return citation;
-}
-
-// MLA 9th edition format
-export function formatMLA(paper: Paper): string {
-  const authors = formatAuthors(paper.authors, 2);
-  const title = `"${paper.title}."`;
-  const journal = paper.journal;
-  const volume = paper.volume;
-  const issue = paper.issue;
-  const year = paper.year || "n.d.";
-  const pages = paper.pages;
-
-  let citation = `${authors}. ${title}`;
-
-  if (journal) {
-    citation += ` *${journal}*`;
-    if (volume) {
-      citation += `, vol. ${volume}`;
-      if (issue) citation += `, no. ${issue}`;
-    }
-    citation += `, ${year}`;
-    if (pages) citation += `, pp. ${pages}`;
-    citation += ".";
-  } else {
-    citation += ` ${year}.`;
-  }
-
-  if (paper.doi) citation += ` DOI:${paper.doi}.`;
-
-  return citation;
-}
-
-// Chicago 17th edition (Notes and Bibliography) format
-export function formatChicago(paper: Paper): string {
-  const authors = formatAuthors(paper.authors, 3);
-  const title = paper.title;
-  const journal = paper.journal;
-  const volume = paper.volume;
-  const issue = paper.issue;
-  const year = paper.year || "n.d.";
-  const pages = paper.pages;
-
-  let citation = `${authors}. "${title}."`;
-
-  if (journal) {
-    citation += ` *${journal}*`;
-    if (volume) {
-      citation += ` ${volume}`;
-      if (issue) citation += `, no. ${issue}`;
-    }
-    citation += ` (${year})`;
-    if (pages) citation += `: ${pages}`;
-    citation += ".";
-  } else {
-    citation += ` ${year}.`;
-  }
-
-  if (paper.doi) citation += ` https://doi.org/${paper.doi}.`;
-
-  return citation;
-}
-
-// Main export function that formats paper based on selected format
-export function formatPaper(paper: Paper, format: ExportFormat): string {
-  switch (format) {
-    case "bibtex":
-      return formatBibTeX(paper);
-    case "ris":
-      return formatRIS(paper);
-    case "endnote":
-      return formatEndNote(paper);
-    case "apa":
-      return formatAPA(paper);
-    case "mla":
-      return formatMLA(paper);
-    case "chicago":
-      return formatChicago(paper);
-    default:
-      return formatBibTeX(paper);
-  }
-}
-
 // Copy formatted paper to clipboard
 export async function copyFormattedPaper(paper: Paper, format: ExportFormat): Promise<void> {
   const toast = await showToast({
@@ -271,7 +262,7 @@ export async function copyFormattedPaper(paper: Paper, format: ExportFormat): Pr
   });
 
   try {
-    const content = formatPaper(paper, format);
+    const content = buildClipboardContent(paper, format);
     await Clipboard.copy(content);
     toast.style = Toast.Style.Success;
     toast.title = `${EXPORT_FORMATS.find((f) => f.id === format)?.title} copied`;
@@ -294,7 +285,7 @@ export async function fetchAndCopyFormatted(baseUrl: string, paperId: string, fo
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const paper: Paper = await res.json();
 
-    const content = formatPaper(paper, format);
+    const content = buildClipboardContent(paper, format);
     await Clipboard.copy(content);
 
     toast.style = Toast.Style.Success;
@@ -304,4 +295,33 @@ export async function fetchAndCopyFormatted(baseUrl: string, paperId: string, fo
     toast.title = "Failed to copy";
     toast.message = e instanceof Error ? e.message : String(e);
   }
+}
+
+// Get list of available CSL templates (for advanced users)
+export function getAvailableTemplates(): string[] {
+  // Common CSL templates available in the plugin
+  return [
+    "apa",
+    "modern-language-association",
+    "chicago-author-date",
+    "chicago-note-bibliography",
+    "ieee",
+    "nature",
+    "science",
+    "vancouver",
+    "harvard1",
+  ];
+}
+
+// Format paper with any CSL template
+export function formatPaperWithTemplate(paper: Paper, template: string): string {
+  const cslData = paperToCSL(paper);
+  const cite = new Cite(cslData);
+
+  // HTML format preserves italics/bold and is compatible with Word
+  // Word will interpret the HTML formatting when pasted
+  return cite.format("bibliography", {
+    format: "html",
+    template,
+  }) as string;
 }

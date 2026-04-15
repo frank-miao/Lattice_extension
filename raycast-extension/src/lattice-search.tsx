@@ -68,7 +68,7 @@ function PaperDetail({ id }: { id: string }) {
               shortcut={{ modifiers: ["cmd"], key: "c" }}
               onAction={() => copyFormattedPaper(data, PREFERRED_FORMAT)}
             />
-            <ActionPanel.Submenu title="Export to More Formats…" shortcut={{ modifiers: ["opt", "cmd"], key: "c" }}>
+            <ActionPanel.Submenu title="Export to More Formats…" shortcut={{ modifiers: ["ctrl", "cmd"], key: "c" }}>
               {EXPORT_FORMATS.map((format) => (
                 <Action key={format.id} title={format.title} onAction={() => copyFormattedPaper(data, format.id)} />
               ))}
@@ -156,7 +156,7 @@ export default function Command() {
             <ActionPanel>
               <Action title="View Details" onAction={() => setSelectedId(item.id)} />
               <CopyPreferredAction id={item.id} shortcut={{ modifiers: ["cmd"], key: "c" }} />
-              <ExportFormatsAction id={item.id} shortcut={{ modifiers: ["opt", "cmd"], key: "c" }} />
+              <ExportFormatsAction id={item.id} shortcut={{ modifiers: ["ctrl", "cmd"], key: "c" }} />
               <Action.CopyToClipboard
                 title="Copy Citekey"
                 content={item.citekey}

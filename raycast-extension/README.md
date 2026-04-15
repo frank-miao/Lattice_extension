@@ -43,8 +43,8 @@ Open Raycast Preferences (`⌘ ,` → Extensions → Lattice Scholar Extension) 
 3. Press `↵` to open the detail view, or use the action panel (`⌘ K`) to copy citation data
 
 **Keyboard shortcuts in search results:**
-- `⌘ B` — Copy citation in your preferred format (configurable in preferences)
-- `⌘ ⇧ E` — Export to more formats (BibTeX, RIS, APA, MLA, Chicago, EndNote)
+- `⌘ C` — Copy citation in your preferred format (configurable in preferences)
+- `⌃ ⌘ C` — Export to more formats (BibTeX, RIS, APA, MLA, Chicago, EndNote)
 - `⌘ ⇧ C` — Copy citekey
 - `⌘ O` — Open DOI in browser
 

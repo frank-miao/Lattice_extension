@@ -30,13 +30,53 @@
       "required": false,
       "default": "bibtex",
       "data": [
-        { "title": "BibTeX", "value": "bibtex" },
-        { "title": "RIS", "value": "ris" },
-        { "title": "EndNote", "value": "endnote" },
-        { "title": "APA", "value": "apa" },
-        { "title": "MLA", "value": "mla" },
-        { "title": "Chicago", "value": "chicago" }
+        {
+          "title": "BibTeX",
+          "value": "bibtex"
+        },
+        {
+          "title": "RIS",
+          "value": "ris"
+        },
+        {
+          "title": "EndNote",
+          "value": "endnote"
+        },
+        {
+          "title": "APA",
+          "value": "apa"
+        },
+        {
+          "title": "MLA",
+          "value": "mla"
+        },
+        {
+          "title": "Chicago",
+          "value": "chicago"
+        },
+        {
+          "title": "CSL-JSON",
+          "value": "csl-json"
+        }
       ]
+    },
+    {
+      "name": "clipboardFontFamily",
+      "title": "Clipboard Font Family",
+      "description": "Font family for rich-text citation exports to Word",
+      "type": "textfield",
+      "required": false,
+      "default": "Arial",
+      "placeholder": "Arial"
+    },
+    {
+      "name": "clipboardFontSize",
+      "title": "Clipboard Font Size",
+      "description": "Font size in points for rich-text citation exports",
+      "type": "textfield",
+      "required": false,
+      "default": "10",
+      "placeholder": "10"
     }
   ],
   "commands": [
@@ -63,6 +103,10 @@
     }
   ],
   "dependencies": {
+    "@citation-js/core": "^0.7.21",
+    "@citation-js/plugin-bibtex": "^0.7.21",
+    "@citation-js/plugin-csl": "^0.7.22",
+    "@citation-js/plugin-ris": "^0.7.21",
     "@raycast/api": "^1.104.12",
     "@raycast/utils": "^1.17.0"
   },

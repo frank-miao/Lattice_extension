@@ -14,11 +14,11 @@
 
 ## 截图
 
-![搜索结果列表](metadata/lattice-search-1.png)
+![搜索结果列表](metadata/lattice-scholar-extension-1.png)
 
-![文献详情页](metadata/lattice-search-2.png)
+![文献详情页](metadata/lattice-scholar-extension-2.png)
 
-![Lattice 状态](metadata/lattice-status-1.png)
+![Lattice 状态](metadata/lattice-scholar-extension-3.png)
 
 ## 使用前提
 
@@ -43,8 +43,8 @@
 3. 按 `↵` 进入详情页，或通过操作面板（`⌘ K`）复制引用数据
 
 **搜索结果中的快捷键：**
-- `⌘ B` — 以首选格式复制引用（可在偏好设置中配置）
-- `⌘ ⇧ E` — 导出为更多格式（BibTeX、RIS、APA、MLA、Chicago、EndNote）
+- `⌘ C` — 以首选格式复制引用（可在偏好设置中配置）
+- `⌃ ⌘ C` — 导出为更多格式（BibTeX、RIS、APA、MLA、Chicago、EndNote）
 - `⌘ ⇧ C` — 复制 citekey
 - `⌘ O` — 在浏览器中打开 DOI
 
