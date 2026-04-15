@@ -8,7 +8,8 @@ Search your [Lattice](https://stringer07.github.io/Lattice_release/) literature 
 
 - **Instant search** across your entire Lattice library as you type
 - **Full citation details** — authors, journal, DOI, year, and more
-- **Copy actions** — copy citekey, title, DOI, or full BibTeX with one keystroke
+- **Multi-format export** — copy citations in BibTeX, RIS, APA, MLA, Chicago, or EndNote format
+- **Quick copy** — copy your preferred format instantly with `⌘ B`
 - **DOI detection** — extract paper metadata from the current browser page via CrossRef or arXiv
 
 ## Screenshots
@@ -29,6 +30,8 @@ Search your [Lattice](https://stringer07.github.io/Lattice_release/) literature 
 Open Raycast Preferences (`⌘ ,` → Extensions → Lattice Scholar Extension) to configure:
 
 - **API Port** — port number for the Lattice local API (default: `52731`)
+- **Preferred Export Format** — default format for quick copy action (BibTeX, RIS, APA, MLA, Chicago, EndNote)
+- **Preferred Export Format** — default format for quick copy action (BibTeX, RIS, APA, MLA, Chicago, EndNote)
 
 ![Preferences](assets/preferences.png)
 
@@ -39,6 +42,18 @@ Open Raycast Preferences (`⌘ ,` → Extensions → Lattice Scholar Extension) 
 1. Open Raycast and run **Search Literature**
 2. Type any part of a title, author, or keyword
 3. Press `↵` to open the detail view, or use the action panel (`⌘ K`) to copy citation data
+
+**Keyboard shortcuts in search results:**
+- `⌘ B` — Copy citation in your preferred format (configurable in preferences)
+- `⌘ ⇧ E` — Export to more formats (BibTeX, RIS, APA, MLA, Chicago, EndNote)
+- `⌘ ⇧ C` — Copy citekey
+- `⌘ O` — Open DOI in browser
+
+**Keyboard shortcuts in search results:**
+- `⌘ B` — Copy citation in your preferred format (configurable in preferences)
+- `⌘ ⇧ E` — Export to more formats (BibTeX, RIS, APA, MLA, Chicago, EndNote)
+- `⌘ ⇧ C` — Copy citekey
+- `⌘ O` — Open DOI in browser
 
 ### Find Paper by Current Page
 

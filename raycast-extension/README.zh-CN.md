@@ -8,7 +8,8 @@
 
 - **即时搜索** — 边输入边搜索，实时检索整个文献库
 - **完整引用信息** — 作者、期刊、DOI、年份等一览无余
-- **快捷复制** — 一键复制 citekey、标题、DOI 或完整 BibTeX
+- **多格式导出** — 支持 BibTeX、RIS、APA、MLA、Chicago、EndNote 等多种引用格式
+- **快速复制** — 使用 `⌘ B` 一键复制首选格式
 - **DOI 识别** — 从当前浏览器页面提取论文元数据（支持 CrossRef 和 arXiv）
 
 ## 截图
@@ -29,6 +30,8 @@
 在 Raycast 偏好设置（`⌘ ,` → 扩展 → Lattice Scholar Extension）中可进行配置：
 
 - **API Port** — Lattice 本地 API 的端口号（默认：`52731`）
+- **Preferred Export Format** — 快速复制操作的默认格式（BibTeX、RIS、APA、MLA、Chicago、EndNote）
+- **Preferred Export Format** — 快速复制操作的默认格式（BibTeX、RIS、APA、MLA、Chicago、EndNote）
 
 ![偏好设置](assets/preferences.png)
 
@@ -39,6 +42,18 @@
 1. 打开 Raycast，运行 **Search Literature**
 2. 输入标题、作者或关键词的任意部分
 3. 按 `↵` 进入详情页，或通过操作面板（`⌘ K`）复制引用数据
+
+**搜索结果中的快捷键：**
+- `⌘ B` — 以首选格式复制引用（可在偏好设置中配置）
+- `⌘ ⇧ E` — 导出为更多格式（BibTeX、RIS、APA、MLA、Chicago、EndNote）
+- `⌘ ⇧ C` — 复制 citekey
+- `⌘ O` — 在浏览器中打开 DOI
+
+**搜索结果中的快捷键：**
+- `⌘ B` — 以首选格式复制引用（可在偏好设置中配置）
+- `⌘ ⇧ E` — 导出为更多格式（BibTeX、RIS、APA、MLA、Chicago、EndNote）
+- `⌘ ⇧ C` — 复制 citekey
+- `⌘ O` — 在浏览器中打开 DOI
 
 ### 识别当前页面论文
 
