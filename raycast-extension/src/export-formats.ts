@@ -194,20 +194,6 @@ function registerTemplate(templateName: string, xml: string): void {
   registeredTemplates.add(templateName);
 }
 
-function extractYear(issued: unknown): number | undefined {
-  if (!isRecord(issued) || !Array.isArray(issued["date-parts"])) {
-    return undefined;
-  }
-
-  const year = issued["date-parts"][0]?.[0];
-  return typeof year === "number" ? year : undefined;
-}
-
-function tagged(tag: string, value: string): string {
-  const normalized = value.trim();
-  return normalized ? `${tag} ${normalized}` : "";
-}
-
 function isStructuredFormat(format: string): format is StructuredFormat {
   return STRUCTURED_FORMATS.some((option) => option.id === format);
 }
