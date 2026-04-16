@@ -191,7 +191,7 @@ function buildClipboardContent(paper: Paper, format: ExportFormat): string | Cli
 
 function wrapClipboardHtml(html: string): string {
   const { fontFamily, fontSizePt } = getClipboardStylePreferences();
-  return `<div style="font-family: ${fontFamily}; font-size: ${fontSizePt}pt; line-height: 1.35;">${html}</div>`;
+  return `<div style="font-family: ${buildFontStack(fontFamily)}; font-size: ${fontSizePt}pt; line-height: 1.35;">${html}</div>`;
 }
 
 function getClipboardStylePreferences(): { fontFamily: string; fontSizePt: number } {
@@ -206,6 +206,18 @@ function getClipboardStylePreferences(): { fontFamily: string; fontSizePt: numbe
 function sanitizeFontFamily(value: string | undefined): string {
   const trimmed = value?.trim();
   return trimmed ? trimmed : "Arial";
+}
+
+function buildFontStack(fontFamily: string): string {
+  const primary = quoteFontFamily(fontFamily);
+  const fallbacks = ['"Arial"', '"Helvetica Neue"', "Helvetica", "sans-serif"];
+  const stack = [primary, ...fallbacks.filter((fallback) => fallback !== primary)];
+  return stack.join(", ");
+}
+
+function quoteFontFamily(fontFamily: string): string {
+  const escaped = fontFamily.replace(/["\\]/g, "\\$&");
+  return `"${escaped}"`;
 }
 
 function sanitizeFontSize(value: string | undefined): number {
