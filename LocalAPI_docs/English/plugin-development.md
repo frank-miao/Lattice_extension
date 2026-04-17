@@ -95,12 +95,16 @@ That means a plugin with UI, styles, icons, and CSL templates can be hosted dire
 If the plugin page itself is loaded from `/plugins/{name}/...`, the recommended pattern is to always call the API with relative paths:
 
 ```js
-async function requestJson(path) {
+async function requestJson(path, init = {}) {
+  const headers = {
+    Accept: "application/json",
+    ...(init.headers ?? {})
+  };
+
   const response = await fetch(`/api/v1${path}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json"
-    }
+    ...init,
+    method: init.method ?? "GET",
+    headers
   });
 
   if (!response.ok) {
@@ -122,9 +126,40 @@ export async function searchLattice(query, limit = 10) {
 export async function fetchPaperSnapshot(id) {
   return requestJson(`/papers/${encodeURIComponent(id)}`);
 }
+
+export async function createPaper(body) {
+  return requestJson("/papers", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+}
 ```
 
 This is also the recommended default integration pattern.
+
+## Handle capability-gated write access
+
+Do not assume `POST /api/v1/papers` is always available.
+
+Recommended pattern:
+
+1. call `/api/v1/status`
+2. inspect `capabilities`
+3. only show write UI or send write requests if `create-paper` is present
+
+Example:
+
+```js
+export async function getCapabilities() {
+  const status = await getBridgeStatus();
+  return new Set(status.capabilities ?? []);
+}
+
+export async function canCreatePapers() {
+  return (await getCapabilities()).has("create-paper");
+}
+```
 
 ## Recommended development workflow
 
@@ -180,15 +215,38 @@ This keeps responsibilities simple:
 - Lattice provides local data and static asset hosting
 - the plugin owns UI, state, rendering, and host integration
 
+## Understand the data boundary
+
+The current read endpoints are citation-oriented and intentionally smaller than the full internal Lattice paper model.
+
+Read payloads currently do not expose:
+
+- `abstract`
+- `collections`
+- `tags`
+- `pdfPath`
+- `pdfURL`
+- `latticeURL`
+
+Important implications:
+
+- if your plugin only needs to open a paper in Lattice, synthesize `lattice://paper/{id}` from the paper `id`
+- if your plugin needs the actual filesystem PDF path, the current Local API does not expose it
+- `pdfPath` is currently an input field accepted by `POST /api/v1/papers`, not a field returned by `GET /api/v1/papers/{id}`
+
 ## What not to rely on
 
 ### A remote website calling the Local API directly
 
 This is not the intended default model. The Local API is designed around local-origin, local-integration usage.
 
-### Treating the Local API as a write API
+### Assuming write access is always available
 
-It is not. The current capability set is centered on search and citation-oriented reads.
+It is optional. The user must explicitly turn `Read-Only Mode` off, and clients should gate write behavior on `/status.capabilities`.
+
+### Treating the read endpoints as full paper serialization
+
+They are not. The Local API is currently optimized for citation workflows, lightweight paper selection, and controlled paper creation.
 
 ## Debugging advice
 
@@ -196,6 +254,8 @@ It is not. The current capability set is centered on search and citation-oriente
 - If search results look wrong, inspect `/api/v1/search` directly
 - If a plugin page does not open, first verify that the plugin assets were actually copied into the plugin directory
 - If static files load but API requests fail, verify that the configured port in Lattice still matches the URL being used
+- If `POST /api/v1/papers` returns `403`, ask the user to turn `Read-Only Mode` off
+- If paper creation succeeds but `pdfAttached` is `false`, inspect the `warnings` array for Trusted Folder or PDF validation failures
 - If the host application caches an entry URL, changing the Local API port usually requires re-registration or reinstallation
 
 ## Related documents
