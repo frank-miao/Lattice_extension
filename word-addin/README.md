@@ -44,7 +44,7 @@ It also loads the add-in web assets from the Lattice local origin:
 Port behavior:
 
 - The installer automatically reads the port from the macOS defaults key `com.aurelian.Lattice:citationBridgePort`
-- If no saved port exists, it falls back to `52731`
+- If no saved port exists, it falls back to `29467`
 - In normal use, you do not need to specify the port manually
 - If the Local API port changes later, uninstall and reinstall the Word add-in so the manifest points to the new local origin
 

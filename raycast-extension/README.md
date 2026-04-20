@@ -25,13 +25,13 @@ Search your [Lattice](https://apps.apple.com/app/lattice-reference-manager/id676
 ## Requirements
 
 - [Lattice](https://apps.apple.com/app/lattice-reference-manager/id6761349832) desktop app must be running
-- The local API is served at `http://127.0.0.1:52731` by default — configurable in extension preferences
+- The local API is served at `http://127.0.0.1:29467` by default — configurable in extension preferences
 
 ## Preferences
 
 Open Raycast Preferences (`⌘ ,` → Extensions → Lattice Scholar Extension) to configure:
 
-- **API Port** — port number for the Lattice local API (default: `52731`)
+- **API Port** — port number for the Lattice local API (default: `29467`)
 - **Preferred Export Format** — default format for the quick copy action. Supports `bibtex`, `ris`, `csl-json`, or any CSL style shipped in `assets/styles`
 - **Clipboard Font Family** — font family used for rich-text citation exports
 - **Clipboard Font Size** — font size in points used for rich-text citation exports

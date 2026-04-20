@@ -3,7 +3,7 @@ import { useFetch } from "@raycast/utils";
 import { useEffect } from "react";
 
 const { port } = getPreferenceValues<Preferences.LatticeStatus>();
-const BASE = `http://127.0.0.1:${port || "52731"}/api/v1`;
+const BASE = `http://127.0.0.1:${port || "29467"}/api/v1`;
 
 interface Status {
   ok: boolean;

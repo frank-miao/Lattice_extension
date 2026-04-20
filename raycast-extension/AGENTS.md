@@ -27,14 +27,14 @@ This is a [Raycast](https://developers.raycast.com/) extension built with React 
 
 ## Preferences
 
-- `port` — local Lattice API port, default `52731`.
+- `port` — local Lattice API port, default `29467`.
 - `preferredFormat` — quick-copy export format. Valid values include `bibtex`, `ris`, `csl-json`, and CSL style names from `assets/styles` without the `.csl` suffix.
 - `clipboardFontFamily` — font family used for rich-text clipboard exports.
 - `clipboardFontSize` — font size in points used for rich-text clipboard exports.
 
 ## Local API
 
-Base URL: `http://127.0.0.1:<port>/api/v1` (default port `52731`, configurable via Raycast preferences)
+Base URL: `http://127.0.0.1:<port>/api/v1` (default port `29467`, configurable via Raycast preferences)
 
 The Lattice app must be running for any API call to succeed. Check `/status` first if debugging connectivity.
 
@@ -99,9 +99,9 @@ The API accepts `OPTIONS` for browser preflight requests and returns `204 No Con
 
 ### Example curl calls
 ```bash
-curl "http://127.0.0.1:52731/api/v1/status"
-curl "http://127.0.0.1:52731/api/v1/search?q=graph%20neural%20network&limit=5"
-curl "http://127.0.0.1:52731/api/v1/papers/550E8400-E29B-41D4-A716-446655440000"
+curl "http://127.0.0.1:29467/api/v1/status"
+curl "http://127.0.0.1:29467/api/v1/search?q=graph%20neural%20network&limit=5"
+curl "http://127.0.0.1:29467/api/v1/papers/550E8400-E29B-41D4-A716-446655440000"
 ```
 
 ## Code Style

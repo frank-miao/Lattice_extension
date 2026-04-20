@@ -66,13 +66,13 @@ What each document is for:
 
 ## One-Minute Start
 
-Assuming your Local API is running on the default port `52731`:
+Assuming your Local API is running on the default port `29467`:
 
 ```bash
-curl http://127.0.0.1:52731/api/v1/status
-curl "http://127.0.0.1:52731/api/v1/search?q=transformer&limit=5"
-curl http://127.0.0.1:52731/api/v1/papers/550E8400-E29B-41D4-A716-446655440000
-curl -X POST http://127.0.0.1:52731/api/v1/papers \
+curl http://127.0.0.1:29467/api/v1/status
+curl "http://127.0.0.1:29467/api/v1/search?q=transformer&limit=5"
+curl http://127.0.0.1:29467/api/v1/papers/550E8400-E29B-41D4-A716-446655440000
+curl -X POST http://127.0.0.1:29467/api/v1/papers \
   -H "Content-Type: application/json" \
   -d '{"title":"Attention Is All You Need"}'
 ```

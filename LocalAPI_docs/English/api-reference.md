@@ -9,7 +9,7 @@ Related documents:
 ## Basics
 
 - Protocol: HTTP
-- Default address: `http://127.0.0.1:52731`
+- Default address: `http://127.0.0.1:29467`
 - API prefix: `/api/v1`
 - Data format: `application/json; charset=utf-8`
 - Supported API methods: `GET`, `POST`, `OPTIONS`
@@ -279,7 +279,7 @@ From an external integration point of view, search matches the following kinds o
 ### Example
 
 ```bash
-curl "http://127.0.0.1:52731/api/v1/search?q=transformer&limit=5"
+curl "http://127.0.0.1:29467/api/v1/search?q=transformer&limit=5"
 ```
 
 ## `GET /papers/{uuid}`
@@ -562,7 +562,7 @@ Status: `201 Created`
 ### Minimal example
 
 ```bash
-curl -X POST http://127.0.0.1:52731/api/v1/papers \
+curl -X POST http://127.0.0.1:29467/api/v1/papers \
   -H "Content-Type: application/json" \
   -d '{"title":"A Brief History of Time"}'
 ```
@@ -627,7 +627,7 @@ The total HTTP request size is limited to `262144` bytes (`256 KiB`), including 
 ### Invalid UUID
 
 ```bash
-curl http://127.0.0.1:52731/api/v1/papers/not-a-uuid
+curl http://127.0.0.1:29467/api/v1/papers/not-a-uuid
 ```
 
 ```json

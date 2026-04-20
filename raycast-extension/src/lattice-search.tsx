@@ -5,7 +5,7 @@ import { EXPORT_FORMATS, Paper, ExportFormat } from "./export-formats";
 import { fetchAndCopyFormatted, copyFormattedPaper } from "./export-clipboard";
 
 const { port, preferredFormat } = getPreferenceValues<Preferences.LatticeSearch>();
-const BASE = `http://127.0.0.1:${port || "52731"}/api/v1`;
+const BASE = `http://127.0.0.1:${port || "29467"}/api/v1`;
 
 function validatePreferredFormat(value: unknown): ExportFormat {
   if (typeof value === "string" && EXPORT_FORMATS.some((f) => f.id === value)) {

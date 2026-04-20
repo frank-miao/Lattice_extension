@@ -25,13 +25,13 @@
 ## 使用前提
 
 - 需要运行 [Lattice](https://apps.apple.com/app/lattice-reference-manager/id6761349832) 桌面应用
-- 本地 API 默认地址为 `http://127.0.0.1:52731`，可在扩展偏好设置中修改
+- 本地 API 默认地址为 `http://127.0.0.1:29467`，可在扩展偏好设置中修改
 
 ## 偏好设置
 
 在 Raycast 偏好设置（`⌘ ,` → 扩展 → Lattice Scholar Extension）中可进行配置：
 
-- **API Port** — Lattice 本地 API 的端口号（默认：`52731`）
+- **API Port** — Lattice 本地 API 的端口号（默认：`29467`）
 - **Preferred Export Format** — 快速复制动作的默认格式。支持 `bibtex`、`ris`、`csl-json`，以及 `assets/styles` 中打包的任意 CSL 样式
 - **Clipboard Font Family** — 富文本引用导出时使用的字体
 - **Clipboard Font Size** — 富文本引用导出时使用的字号（pt）

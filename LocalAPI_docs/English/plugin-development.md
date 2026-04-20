@@ -29,9 +29,9 @@ That means you can deploy a plugin as a static website into Lattice's plugin dir
 Examples:
 
 ```text
-http://127.0.0.1:52731/plugins/my-plugin/index.html
-http://127.0.0.1:52731/plugins/my-plugin/app.js
-http://127.0.0.1:52731/plugins/my-plugin/assets/icon.png
+http://127.0.0.1:29467/plugins/my-plugin/index.html
+http://127.0.0.1:29467/plugins/my-plugin/app.js
+http://127.0.0.1:29467/plugins/my-plugin/assets/icon.png
 ```
 
 ## Why this model is recommended
@@ -168,7 +168,7 @@ export async function canCreatePapers() {
 Start with `curl` or a browser check:
 
 ```bash
-curl http://127.0.0.1:52731/api/v1/status
+curl http://127.0.0.1:29467/api/v1/status
 ```
 
 ### 2. Build your front end locally
@@ -191,7 +191,7 @@ Deploy the final output to:
 ### 4. Open it through the plugin URL
 
 ```text
-http://127.0.0.1:52731/plugins/<plugin-name>/index.html
+http://127.0.0.1:29467/plugins/<plugin-name>/index.html
 ```
 
 ### 5. If the host application needs registration, generate its manifest or loader

@@ -16,11 +16,11 @@
     {
       "name": "port",
       "title": "API Port",
-      "description": "Port number for the Lattice local API (default: 52731)",
+      "description": "Port number for the Lattice local API (default: 29467)",
       "type": "textfield",
       "required": false,
-      "default": "52731",
-      "placeholder": "52731"
+      "default": "29467",
+      "placeholder": "29467"
     },
     {
       "name": "preferredFormat",

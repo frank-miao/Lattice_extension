@@ -6,7 +6,7 @@ BUNDLE_ID="com.aurelian.Lattice"
 
 # Auto-detect port from Lattice preferences, fall back to default
 SAVED_PORT=$(defaults read "$BUNDLE_ID" citationBridgePort 2>/dev/null || true)
-PORT="${LATTICE_PORT:-${SAVED_PORT:-52731}}"
+PORT="${LATTICE_PORT:-${SAVED_PORT:-29467}}"
 ORIGIN="http://127.0.0.1:$PORT"
 
 LATTICE_CONTAINER="$HOME/Library/Containers/$BUNDLE_ID/Data"

@@ -20,18 +20,18 @@ You will find the following settings:
 - `Base URL`
 - `Trusted Folders` (shown when `Read-Only Mode` is off)
 
-The default port is `52731`, and the configurable range is `1024` to `65535`.
+The default port is `29467`, and the configurable range is `1024` to `65535`.
 
 Typical default address:
 
 ```text
-http://127.0.0.1:52731
+http://127.0.0.1:29467
 ```
 
 API prefix:
 
 ```text
-http://127.0.0.1:52731/api/v1
+http://127.0.0.1:29467/api/v1
 ```
 
 If you change the port, existing clients must reconnect to the new address.
@@ -41,7 +41,7 @@ If you change the port, existing clients must reconnect to the new address.
 ## 2. Start with a health check and capability check
 
 ```bash
-curl http://127.0.0.1:52731/api/v1/status
+curl http://127.0.0.1:29467/api/v1/status
 ```
 
 Example response:
@@ -81,7 +81,7 @@ Recommended rule:
 ## 3. Try a search
 
 ```bash
-curl "http://127.0.0.1:52731/api/v1/search?q=graph%20neural%20network&limit=5"
+curl "http://127.0.0.1:29467/api/v1/search?q=graph%20neural%20network&limit=5"
 ```
 
 If `q` is empty, the endpoint returns recently added papers.
@@ -91,7 +91,7 @@ If `q` is empty, the endpoint returns recently added papers.
 After you get an `id` from search results:
 
 ```bash
-curl http://127.0.0.1:52731/api/v1/papers/550E8400-E29B-41D4-A716-446655440000
+curl http://127.0.0.1:29467/api/v1/papers/550E8400-E29B-41D4-A716-446655440000
 ```
 
 This endpoint returns a citation-oriented paper snapshot and includes a `cslItem` that can be passed directly to a CSL processor.
@@ -101,7 +101,7 @@ This endpoint returns a citation-oriented paper snapshot and includes a `cslItem
 If `create-paper` is present in `/status.capabilities`:
 
 ```bash
-curl -X POST http://127.0.0.1:52731/api/v1/papers \
+curl -X POST http://127.0.0.1:29467/api/v1/papers \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Attention Is All You Need",
@@ -141,7 +141,7 @@ Before relying on it:
 Example:
 
 ```bash
-curl -X POST http://127.0.0.1:52731/api/v1/papers \
+curl -X POST http://127.0.0.1:29467/api/v1/papers \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Attention Is All You Need",
@@ -175,7 +175,7 @@ Practical implication:
 Call the full URL directly:
 
 ```js
-const baseURL = "http://127.0.0.1:52731/api/v1";
+const baseURL = "http://127.0.0.1:29467/api/v1";
 const status = await fetch(`${baseURL}/status`).then((r) => r.json());
 ```
 

@@ -44,7 +44,7 @@
 端口规则如下：
 
 - 安装脚本会自动从 macOS defaults 键 `com.aurelian.Lattice:citationBridgePort` 读取端口
-- 如果没有保存的端口，则默认使用 `52731`
+- 如果没有保存的端口，则默认使用 `29467`
 - 正常使用时不需要手动指定端口
 - 如果之后 Local API 端口发生变化，需要先卸载再重新安装 Word 插件，让 manifest 指向新的本地地址
 
