@@ -5,7 +5,7 @@ import { EXPORT_FORMATS, Paper, ExportFormat } from "./export-formats";
 import { fetchAndCopyFormatted, copyFormattedPaper } from "./export-clipboard";
 import { getApiBaseUrl, hasCapability, LatticeStatus } from "./local-api";
 
-const { port, preferredFormat } = getPreferenceValues<Preferences.LatticeSearch>();
+const { port, preferredFormat } = getPreferenceValues<Preferences.LatticeSearchKeyword>();
 const BASE = getApiBaseUrl(port);
 
 function validatePreferredFormat(value: unknown): ExportFormat {
@@ -84,6 +84,12 @@ function PaperDetail({ id, onBack }: { id: string; onBack: () => void }) {
                 content={data.citekey}
                 shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
               />
+              <Action.OpenInBrowser
+                title="Open in Lattice"
+                icon={Icon.AppWindow}
+                url={`lattice://paper/${data.id}`}
+                shortcut={{ modifiers: ["cmd"], key: "l" }}
+              />
               {data.doi && (
                 <Action.OpenInBrowser
                   title="Open DOI in Browser"
@@ -144,6 +150,12 @@ function SearchResults({ canOpenPaperDetail }: { canOpenPaperDetail: boolean }) 
               {canOpenPaperDetail && (
                 <ExportFormatsAction id={item.id} shortcut={{ modifiers: ["ctrl", "cmd"], key: "c" }} />
               )}
+              <Action.OpenInBrowser
+                title="Open in Lattice"
+                icon={Icon.AppWindow}
+                url={`lattice://paper/${item.id}`}
+                shortcut={{ modifiers: ["cmd"], key: "l" }}
+              />
               <Action.CopyToClipboard
                 title="Copy Citekey"
                 content={item.citekey}

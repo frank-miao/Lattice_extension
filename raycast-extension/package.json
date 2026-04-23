@@ -113,23 +113,22 @@
   ],
   "commands": [
     {
-      "name": "lattice-search",
-      "title": "Search Literature",
-      "subtitle": "Lattice Scholar Extension",
+      "name": "lattice-search-keyword",
+      "title": "Search Literature by Keyword",
+      "subtitle": "Title, Author, Journal, Year, etc.",
       "description": "Search literature in your Lattice library",
       "mode": "view"
     },
     {
       "name": "lattice-status",
       "title": "Check Connection",
-      "subtitle": "Lattice Scholar Extension",
       "description": "Check Lattice local API connection status",
       "mode": "view"
     },
     {
       "name": "lattice-doi",
       "title": "Find Paper by Current Page",
-      "subtitle": "Lattice Scholar Extension",
+      "subtitle": "Extract DOI from browser and import into Lattice",
       "description": "Detect the DOI on the current browser page and show paper metadata",
       "mode": "view"
     }

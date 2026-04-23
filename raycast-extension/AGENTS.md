@@ -22,7 +22,7 @@ npm run publish    # Publish to the Raycast Store
 
 This is a [Raycast](https://developers.raycast.com/) extension built with React + TypeScript. It is a frontend-only client — all data comes from the Lattice app's local HTTP API.
 
-- `src/lattice-search.tsx` — `lattice-search` command: live search with paper detail view and clipboard actions.
+- `src/lattice-search-keyword.tsx` — `lattice-search-keyword` command: live search with paper detail view and clipboard actions.
 - `src/lattice-status.tsx` — `lattice-status` command: health check showing API/app version and capabilities.
 - `src/lattice-doi.tsx` — `lattice-doi` command: detect DOI from current browser page and fetch metadata via CrossRef/arXiv.
 - `src/metadata.ts` — Metadata fetcher for DOI resolution (CrossRef + arXiv APIs).
