@@ -3,9 +3,10 @@ import { useFetch } from "@raycast/utils";
 import { useEffect, useState } from "react";
 import { EXPORT_FORMATS, Paper, ExportFormat } from "./export-formats";
 import { fetchAndCopyFormatted, copyFormattedPaper } from "./export-clipboard";
+import { getApiBaseUrl, hasCapability, LatticeStatus } from "./local-api";
 
 const { port, preferredFormat } = getPreferenceValues<Preferences.LatticeSearch>();
-const BASE = `http://127.0.0.1:${port || "29467"}/api/v1`;
+const BASE = getApiBaseUrl(port);
 
 function validatePreferredFormat(value: unknown): ExportFormat {
   if (typeof value === "string" && EXPORT_FORMATS.some((f) => f.id === value)) {
@@ -26,7 +27,7 @@ interface SearchResult {
   title: string;
   authorsDisplay: string;
   subtitle: string;
-  year: number;
+  year: number | null;
   citekey: string;
   paperType: string;
 }
@@ -45,8 +46,8 @@ function PaperDetail({ id, onBack }: { id: string; onBack: () => void }) {
     : data
       ? [
           `# ${data.title}`,
-          data.authors?.length && `**Authors:** ${data.authors.join(", ")}`,
-          data.year && `**Year:** ${data.year}`,
+          data.authors.length > 0 && `**Authors:** ${data.authors.join(", ")}`,
+          data.year != null && `**Year:** ${data.year}`,
           data.journal && `**Journal:** ${data.journal}`,
           data.volume && `**Volume:** ${data.volume}`,
           data.issue && `**Issue:** ${data.issue}`,
@@ -100,41 +101,7 @@ function PaperDetail({ id, onBack }: { id: string; onBack: () => void }) {
   );
 }
 
-// Fetches full paper data on demand and copies in preferred format to clipboard.
-function CopyPreferredAction({ id, shortcut }: { id: string; shortcut?: Action.Props["shortcut"] }) {
-  const formatTitle = getFormatTitle(PREFERRED_FORMAT);
-
-  async function handleAction() {
-    const toast = await showToast({ style: Toast.Style.Animated, title: `Fetching ${formatTitle}…` });
-    try {
-      const res = await fetch(`${BASE}/papers/${id}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const paper: Paper = await res.json();
-      await copyFormattedPaper(paper, PREFERRED_FORMAT);
-      toast.style = Toast.Style.Success;
-      toast.title = `${formatTitle} copied`;
-    } catch (e) {
-      toast.style = Toast.Style.Failure;
-      toast.title = "Failed to copy";
-      toast.message = e instanceof Error ? e.message : String(e);
-    }
-  }
-
-  return <Action title={`Export to ${formatTitle} Format`} shortcut={shortcut} onAction={handleAction} />;
-}
-
-// Submenu for exporting in different formats
-function ExportFormatsAction({ id, shortcut }: { id: string; shortcut?: Keyboard.Shortcut }) {
-  return (
-    <ActionPanel.Submenu title="Export to More Formats…" shortcut={shortcut}>
-      {EXPORT_FORMATS.map((format) => (
-        <Action key={format.id} title={format.title} onAction={() => fetchAndCopyFormatted(BASE, id, format.id)} />
-      ))}
-    </ActionPanel.Submenu>
-  );
-}
-
-export default function Command() {
+function SearchResults({ canOpenPaperDetail }: { canOpenPaperDetail: boolean }) {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -172,9 +139,11 @@ export default function Command() {
           accessories={[{ text: item.citekey }]}
           actions={
             <ActionPanel>
-              <Action title="View Details" onAction={() => setSelectedId(item.id)} />
-              <CopyPreferredAction id={item.id} shortcut={{ modifiers: ["cmd"], key: "c" }} />
-              <ExportFormatsAction id={item.id} shortcut={{ modifiers: ["ctrl", "cmd"], key: "c" }} />
+              {canOpenPaperDetail && <Action title="View Details" onAction={() => setSelectedId(item.id)} />}
+              {canOpenPaperDetail && <CopyPreferredAction id={item.id} shortcut={{ modifiers: ["cmd"], key: "c" }} />}
+              {canOpenPaperDetail && (
+                <ExportFormatsAction id={item.id} shortcut={{ modifiers: ["ctrl", "cmd"], key: "c" }} />
+              )}
               <Action.CopyToClipboard
                 title="Copy Citekey"
                 content={item.citekey}
@@ -186,4 +155,66 @@ export default function Command() {
       ))}
     </List>
   );
+}
+
+// Fetches full paper data on demand and copies in preferred format to clipboard.
+function CopyPreferredAction({ id, shortcut }: { id: string; shortcut?: Action.Props["shortcut"] }) {
+  const formatTitle = getFormatTitle(PREFERRED_FORMAT);
+
+  async function handleAction() {
+    const toast = await showToast({ style: Toast.Style.Animated, title: `Fetching ${formatTitle}…` });
+    try {
+      const res = await fetch(`${BASE}/papers/${id}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const paper: Paper = await res.json();
+      await copyFormattedPaper(paper, PREFERRED_FORMAT);
+      toast.style = Toast.Style.Success;
+      toast.title = `${formatTitle} copied`;
+    } catch (e) {
+      toast.style = Toast.Style.Failure;
+      toast.title = "Failed to copy";
+      toast.message = e instanceof Error ? e.message : String(e);
+    }
+  }
+
+  return <Action title={`Export to ${formatTitle} Format`} shortcut={shortcut} onAction={handleAction} />;
+}
+
+// Submenu for exporting in different formats
+function ExportFormatsAction({ id, shortcut }: { id: string; shortcut?: Keyboard.Shortcut }) {
+  return (
+    <ActionPanel.Submenu title="Export to More Formats…" shortcut={shortcut}>
+      {EXPORT_FORMATS.map((format) => (
+        <Action key={format.id} title={format.title} onAction={() => fetchAndCopyFormatted(BASE, id, format.id)} />
+      ))}
+    </ActionPanel.Submenu>
+  );
+}
+
+export default function Command() {
+  const { data: status, isLoading: isStatusLoading, error: statusError } = useFetch<LatticeStatus>(`${BASE}/status`);
+
+  useEffect(() => {
+    if (statusError) {
+      showToast({ style: Toast.Style.Failure, title: "Lattice not reachable", message: statusError.message });
+    }
+  }, [statusError]);
+
+  if (isStatusLoading) {
+    return <Detail isLoading markdown="Checking Lattice connection…" />;
+  }
+
+  if (statusError || !status || !status.ok) {
+    return (
+      <Detail
+        markdown={`## Lattice Unavailable\n\nCould not reach the Local API at \`${BASE}\`.\n\nMake sure Lattice is running and the API port preference is correct.`}
+      />
+    );
+  }
+
+  if (!hasCapability(status, "search")) {
+    return <Detail markdown="## Search Unavailable\n\nThis Lattice instance does not expose the search capability." />;
+  }
+
+  return <SearchResults canOpenPaperDetail={hasCapability(status, "paper-detail")} />;
 }

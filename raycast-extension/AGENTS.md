@@ -36,59 +36,9 @@ This is a [Raycast](https://developers.raycast.com/) extension built with React 
 
 Base URL: `http://127.0.0.1:<port>/api/v1` (default port `29467`, configurable via Raycast preferences)
 
-The Lattice app must be running for any API call to succeed. Check `/status` first if debugging connectivity.
+The API reference can be found in [../LocalAPI_docs/English/api-reference.md](../LocalAPI_docs/English/api-reference.md).
 
-- Protocol is HTTP.
-- Response content type is JSON.
-- Supported methods are `GET` and `OPTIONS` only.
-- Write operations are not supported by the Local API.
-- Error responses use a uniform shape: `{ error: string }`.
-- Common statuses: `200`, `204` (`OPTIONS`), `400`, `403`, `404`, `405`, `500`.
-- The API is intended for local origins (`localhost` / `127.0.0.1`). Do not assume arbitrary remote origins will work.
-
-### `GET /status`
-Health check. Returns `{ ok, apiVersion, appVersion, capabilities }`.
-
-- `capabilities` is a `string[]`.
-- Known capabilities currently include `search`, `paper-detail`, `csl-item`, and `plugin-hosting`.
-
-### `GET /search?q=<query>&limit=<n>`
-Search the literature database. Returns lightweight result cards wrapped in a `papers` array:
-```
-{
-  papers: [
-    { id, title, authorsDisplay, subtitle, year, citekey, paperType }
-  ]
-}
-```
-- `q` is optional. If empty, the endpoint returns recently added papers.
-- `limit` defaults to `10` and valid values are `1` to `50`.
-- `id` — paper UUID, used to fetch full details
-- `title` — empty titles are normalized by the API to `Untitled`
-- `subtitle` — pre-formatted secondary line (authors, year, source) for UI display
-- `year` — `integer | null`
-- `paperType` values: `article`, `book`, `inproceedings`, `thesis`, `report`, `misc`
-
-### `GET /papers/<uuid>`
-Full citation record for a single document:
-```
-{ id, citekey, title, authors, year, journal, doi, volume, issue, pages, isbn, paperType, cslItem }
-```
-- `<uuid>` must be a valid UUID or the API returns `400`.
-- Nullable fields include `year`, `journal`, `doi`, `volume`, `issue`, `pages`, and `isbn`.
-- `cslItem` — embedded CSL-JSON payload, ready for citation processors
-- `cslItem.id` matches the paper UUID.
-- `cslItem.issued` is the canonical date object and should be preferred when deriving years for export logic.
-- `paperType` maps to CSL types as follows:
-  - `article` -> `article-journal`
-  - `book` -> `book`
-  - `inproceedings` -> `paper-conference`
-  - `thesis` -> `thesis`
-  - `report` -> `report`
-  - `misc` -> `article`
-
-### `OPTIONS`
-The API accepts `OPTIONS` for browser preflight requests and returns `204 No Content` with CORS headers only.
+ALWAYS read the API reference before making any edits that consume the Local API. Do not make assumptions about response shapes or behaviors that are not documented there.
 
 ## Export Behavior
 

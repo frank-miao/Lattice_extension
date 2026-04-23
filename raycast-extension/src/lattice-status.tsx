@@ -1,19 +1,13 @@
 import { Detail, getPreferenceValues, showToast, Toast } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
 import { useEffect } from "react";
+import { getApiBaseUrl, LatticeStatus } from "./local-api";
 
 const { port } = getPreferenceValues<Preferences.LatticeStatus>();
-const BASE = `http://127.0.0.1:${port || "29467"}/api/v1`;
-
-interface Status {
-  ok: boolean;
-  apiVersion: string;
-  appVersion: string;
-  capabilities: string[];
-}
+const BASE = getApiBaseUrl(port);
 
 export default function Command() {
-  const { data, isLoading, error } = useFetch<Status>(`${BASE}/status`);
+  const { data, isLoading, error } = useFetch<LatticeStatus>(`${BASE}/status`);
 
   useEffect(() => {
     if (error) {
@@ -29,6 +23,9 @@ export default function Command() {
           "## Lattice is Running",
           `**API Version:** ${data?.apiVersion}`,
           `**App Version:** ${data?.appVersion}`,
+          `**Read Only:** ${data?.readOnly ? "Yes" : "No"}`,
+          `**Browser Extension:** ${data?.browserExtensionEnabled ? "Enabled" : "Disabled"}`,
+          `**Base URL:** ${data?.baseURL || BASE.replace(/\/api\/v1$/, "")}`,
           `**Capabilities:** ${data?.capabilities?.join(", ") || "—"}`,
         ].join("\n\n");
 

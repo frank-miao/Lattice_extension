@@ -19,13 +19,13 @@ export interface Paper {
   citekey: string;
   title: string;
   authors: string[];
-  year: number;
-  journal: string;
-  doi: string;
-  volume: string;
-  issue: string;
-  pages: string;
-  isbn: string;
+  year: number | null;
+  journal: string | null;
+  doi: string | null;
+  volume: string | null;
+  issue: string | null;
+  pages: string | null;
+  isbn: string | null;
   paperType: string;
   cslItem: Record<string, unknown>;
 }

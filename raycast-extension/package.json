@@ -25,11 +25,72 @@
     {
       "name": "preferredFormat",
       "title": "Preferred Export Format",
-      "description": "Default format for the quick copy action. Use a structured format like bibtex, ris, csl-json, or a CSL filename from assets/styles without the .csl suffix.",
-      "type": "textfield",
+      "description": "Default format for the quick copy action.",
+      "type": "dropdown",
       "required": false,
       "default": "bibtex",
-      "placeholder": "bibtex"
+      "data": [
+        {
+          "title": "BibTeX",
+          "value": "bibtex"
+        },
+        {
+          "title": "RIS",
+          "value": "ris"
+        },
+        {
+          "title": "CSL-JSON",
+          "value": "csl-json"
+        },
+        {
+          "title": "APA",
+          "value": "apa"
+        },
+        {
+          "title": "Chicago Author-Date",
+          "value": "chicago-author-date"
+        },
+        {
+          "title": "Chicago Notes & Bibliography",
+          "value": "chicago-notes-bibliography"
+        },
+        {
+          "title": "China National Standard GB/T 7714-2015 Author-Date",
+          "value": "china-national-standard-gb-t-7714-2015-author-date"
+        },
+        {
+          "title": "China National Standard GB/T 7714-2015 Note",
+          "value": "china-national-standard-gb-t-7714-2015-note"
+        },
+        {
+          "title": "China National Standard GB/T 7714-2015 Numeric",
+          "value": "china-national-standard-gb-t-7714-2015-numeric"
+        },
+        {
+          "title": "Elsevier Vancouver",
+          "value": "elsevier-vancouver"
+        },
+        {
+          "title": "Elsevier Vancouver Author-Date Alphabetical",
+          "value": "elsevier-vancouver-author-date-alphabetical"
+        },
+        {
+          "title": "IEEE",
+          "value": "ieee"
+        },
+        {
+          "title": "Modern Language Association",
+          "value": "modern-language-association"
+        },
+        {
+          "title": "Nature",
+          "value": "nature"
+        },
+        {
+          "title": "UCL University College Vancouver",
+          "value": "ucl-university-college-vancouver"
+        }
+      ]
     },
     {
       "name": "clipboardFontFamily",
