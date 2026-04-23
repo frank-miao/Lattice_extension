@@ -12,6 +12,12 @@ npm run fix-lint   # Auto-fix lint issues
 npm run publish    # Publish to the Raycast Store
 ```
 
+## Version Control
+
+- Make changes on a dedicated feature branch.
+- Commit work to that branch before publishing or handing it off.
+- Do not push commits from `main` or the default branch.
+
 ## Architecture
 
 This is a [Raycast](https://developers.raycast.com/) extension built with React + TypeScript. It is a frontend-only client — all data comes from the Lattice app's local HTTP API.
